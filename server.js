@@ -12,6 +12,10 @@ app.set("view engine", "handlebars");
 const routes = require("./controllers/burgers_controllers.js");
 app.use(routes);
 
+app.get("/", function(req, res) {
+  res.json(path.join(__dirname, "public/index.html"));
+});
+
 app.listen(PORT, function() {
   console.log("Server is listening on: http://localhost:" + PORT);
 });
