@@ -1,6 +1,6 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
-const mysql = require("mysql");
+const db = require("./models");
 
 const app = express();
 // Set the port of our application
@@ -15,17 +15,13 @@ app.set("view engine", "handlebars");
 
 app.use(express.static("public"));
 
-const routes = require("./controllers/burgers_controllers.js");
+const routes = require("./routes/burgers_controllers.js");
 app.use(routes);
-
-app.get("/", function(req, res) {
-  res.json(path.join(__dirname, "public/index.html"));
-});
 
 // Syncing our sequelize models and then starting our Express app
 db.sequelize.sync().then(function() {
   app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
+    console.log("App listening on PORT %s", PORT);
   });
 });
 
