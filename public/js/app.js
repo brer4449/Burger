@@ -1,14 +1,10 @@
 $(document).ready(function() {
   // Getting a reference to the input field where user adds a new burger
-  let $newItemInput = $("input.new-item");
-  // Our new burgers will go inside the todoContainer
-  let $todoContainer = $(".burger-container");
+  let $newItemInput = $("textarea.new-item");
+  // Our new burgers will go inside the burgerContainer
+  let $burgerContainer = $(".burger-container");
   // Adding event listeners for deleting, editing, and adding burgers
   $(document).on("click", "button.delete", deleteBurger);
-  $(document).on("click", "button.complete", toggleComplete);
-  $(document).on("click", ".burger-item", editBurger);
-  $(document).on("keyup", ".burger-item", finishEdit);
-  $(document).on("blur", ".burger-item", cancelEdit);
   $(document).on("submit", "#burger-form", insertBurger);
 
   // Our initial burgers array
@@ -19,12 +15,12 @@ $(document).ready(function() {
 
   // This function resets the burgers displayed with new burgers from the database
   function initializeRows() {
-    $todoContainer.empty();
+    $burgerContainer.empty();
     let rowsToAdd = [];
     for (let i = 0; i < burgers.length; i++) {
       rowsToAdd.push(createNewRow(burgers[i]));
     }
-    $todoContainer.prepend(rowsToAdd);
+    $burgerContainer.prepend(rowsToAdd);
   }
 
   // This function grabs burgers from the database and updates the view
@@ -45,87 +41,29 @@ $(document).ready(function() {
     }).then(getBurgers);
   }
 
-  // This function handles showing the input box for a user to edit a burger
-  function editBurger() {
-    let currentBurger = $(this).data("burger");
-    $(this)
-      .children()
-      .hide();
-    $(this)
-      .children("input.edit")
-      .val(currentBurger.text);
-    $(this)
-      .children("input.edit")
-      .show();
-    $(this)
-      .children("input.edit")
-      .focus();
-  }
+  // This function inserts a new burger into our database and then updates the view
+  function insertBurger(event) {
+    event.preventDefault();
+    let burger = {
+      burger: $newItemInput.val().trim()
+    };
 
-  // Toggles complete status
-  function toggleComplete(event) {
-    event.stopPropagation();
-    let burger = $(this)
-      .parent()
-      .data("burger");
-    burger.complete = !burger.complete;
-    updateTodo(burger);
-  }
-
-  // This function starts updating a burger in the database if a user hits the "Enter Key"
-  // While in edit mode
-  function finishEdit(event) {
-    let updatedTodo = $(this).data("burger");
-    if (event.which === 13) {
-      updatedTodo.text = $(this)
-        .children("input")
-        .val()
-        .trim();
-      $(this).blur();
-      updateTodo(updatedTodo);
-    }
-  }
-
-  // This function updates a burger in our database
-  function updateTodo(burger) {
-    $.ajax({
-      method: "PUT",
-      url: "/api/burgers",
-      data: burger
-    }).then(getBurgers);
-  }
-
-  // This function is called whenever a burger item is in edit mode and loses focus
-  // This cancels any edits being made
-  function cancelEdit() {
-    let currentBurger = $(this).data("burger");
-    if (currentBurger) {
-      $(this)
-        .children()
-        .hide();
-      $(this)
-        .children("input.edit")
-        .val(currentBurger.text);
-      $(this)
-        .children("span")
-        .show();
-      $(this)
-        .children("button")
-        .show();
-    }
+    $.post("/api/burgers", burger, getBurgers);
+    $newItemInput.val("");
   }
 
   // This function constructs a burger-item row
+  // Might need this later for reference?
   function createNewRow(burger) {
     let $newInputRow = $(
       [
         "<li class='list-group-item burger-item'>",
         "<span>",
-        burger.text,
+        burger.burgername,
         "</span>",
         "<input type='text' class='edit' style='display: none;'>",
-        "<button class='delete btn btn-danger'>x</button>",
-        "<button class='complete btn btn-primary'>✓</button>",
+        // "<button class='delete btn btn-danger'>x</button>",
+        "<button class='complete btn btn-primary'>Devour!</button>",
         "</li>"
       ].join("")
     );
@@ -137,17 +75,5 @@ $(document).ready(function() {
       $newInputRow.find("span").css("text-decoration", "line-through");
     }
     return $newInputRow;
-  }
-
-  // This function inserts a new burger into our database and then updates the view
-  function insertBurger(event) {
-    event.preventDefault();
-    let burger = {
-      text: $newItemInput.val().trim(),
-      complete: false
-    };
-
-    $.post("/api/burgers", burger, getBurgers);
-    $newItemInput.val("");
   }
 });
