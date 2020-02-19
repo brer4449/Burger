@@ -1,6 +1,6 @@
 // Dependencies
 // =============================================================
-const db = require("../models/index");
+const db = require("../models");
 // Routes
 // =============================================================
 module.exports = function(app) {
@@ -22,25 +22,12 @@ module.exports = function(app) {
       res.end();
     });
   });
-  app.get("/ap/:model/:id", function(req, res) {
-    const modelName = req.params.model;
-    db[modelName].findOne({
-      where: {
-        id: req.params.id
-      }
-    });
-  });
 
   /*
   app.get("/", function(req, res) {
     res.json(path.join(__dirname, "public/index.html"));
   });
   */
-
-  app.get("/ap/:model/", function(req, res) {
-    const modelName = req.params.model;
-    db[modelName].findAll({});
-  });
 };
 
 // // Dependencies

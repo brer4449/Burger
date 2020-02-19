@@ -11,4 +11,5 @@ module.exports = function(sequelize, Datatypes) {
         burgername: "Big Mac"
       });
   });
+  return Burger;
 };
