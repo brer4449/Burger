@@ -1,62 +1,30 @@
 <h1>Eat Da Burrrgrrrr!</h1>
 
 <ul>
-  {{!-- {{#each burgers}} --}}
+  {{#each burgers}}
   <li>
     <p class="burger-container">
-      {{!-- {{this.dataValues.id}}. {{this.dataValues.burgername}} --}}
+      {{this.dataValues.id}}. {{this.dataValues.burgername}}
 
       <button data-burgerid="{{this.dataValues.id}}" class="delburger">Delete Burger!</button>
     </p>
   </li>
-  {{!-- {{/each}} --}}
+  {{/each}}
 </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h3>To be eaten</h3>
+    </div>
+    <div class="col-6">
+      <h3>Devoured</h3>
+    </div>
+  </div>
+</div>
+
 
 <h2>Create a Burger</h2>
 <form id="createburger" class="button-size">
   <textarea type="text" name="burger" class="new-item"></textarea>
-  <button type="submit">Save Burger!</button>
+  <button type="submit" class="btn btn-primary">Save Burger!</button>
 </form>
-
-<script type="text/javascript">
-  $(".delburger").on("click", function (event) {
-    // Get the ID from the button.
-    // This is shorthand for $(this).attr("data-burgerid")
-    let id = $(this).data("burgerid");
-
-    // Send the DELETE request.
-    $.ajax("/api/burgers/" + id, {
-      type: "DELETE"
-    }).then(
-      function () {
-        console.log("deleted id ", id);
-        // Reload the page to get the updated list
-        location.reload();
-      }
-    );
-  });
-
-  $("#createburger").on("submit", function (event) {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
-
-    // [name=burger] will find an element with a "name" attribute equal to the string "burger"
-    let newBurger = {
-      burger: $("#createburger [name=burger]").val().trim()
-    };
-    console.log(newBurger.burger)
-    // Send the POST request.
-    $.ajax("/api/burgers/", {
-      type: "POST",
-      data: newBurger.burger
-    }).then(
-      function () {
-        console.log("created new burger");
-        // Reload the page to get the updated list
-        location.reload();
-      }
-    );
-  });
-
-
-</script>

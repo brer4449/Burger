@@ -7,9 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery.js"></script>
-  {{!-- <link rel="stylesheet" href="../../public/css/style.css" /> --}}
+  <link rel="stylesheet" href="./css/style.css" />
   <title>Burrrgrrrr</title>
 </head>
 
@@ -17,6 +17,45 @@
   {{{ body }}}
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/app.js"></script>
+<script src="js/app.js">
+  $(".delburger").on("click", function (event) {
+    // Get the ID from the button.
+    // This is shorthand for $(this).attr("data-burgerid")
+    let id = $(this).data("burgerid");
+
+    // Send the DELETE request.
+    $.ajax("/api/burgers/" + id, {
+      type: "DELETE"
+    }).then(
+      function () {
+        console.log("deleted id ", id);
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+  $("#createburger").on("submit", function (event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    // [name=burger] will find an element with a "name" attribute equal to the string "burger"
+    let newBurger = {
+      $("#createburger [name=burger]").val().trim()
+    };
+    console.log(newBurger.burger)
+    // Send the POST request.
+    $.ajax("/api/burgers/", {
+      type: "POST",
+      data: newBurger.burger
+    }).then(
+      function () {
+        console.log("created new burger");
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+</script>
 
 </html>

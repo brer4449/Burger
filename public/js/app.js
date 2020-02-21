@@ -5,7 +5,7 @@ $(document).ready(function() {
   let $burgerContainer = $(".burger-container");
   // Adding event listeners for deleting, editing, and adding burgers
   $(document).on("click", "button.delete", deleteBurger);
-  $(document).on("submit", "#burger-form", insertBurger);
+  $(document).on("submit", insertBurger);
 
   // Our initial burgers array
   let burgers = [];
@@ -44,16 +44,13 @@ $(document).ready(function() {
   // This function inserts a new burger into our database and then updates the view
   function insertBurger(event) {
     event.preventDefault();
-    let burger = {
-      burger: $newItemInput.val().trim()
-    };
-
+    let burger = $newItemInput.val().trim();
+    console.log(burger);
     $.post("/api/burgers", burger, getBurgers);
     $newItemInput.val("");
   }
 
   // This function constructs a burger-item row
-  // Might need this later for reference?
   function createNewRow(burger) {
     let $newInputRow = $(
       [
