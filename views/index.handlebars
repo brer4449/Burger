@@ -1,12 +1,12 @@
 <h1>Eat Da Burrrgrrrr!</h1>
 
 <ul>
-  {{#each burgers}}
+  {{#each allBurgers}}
   <li>
     <p class="burger-container">
-      {{this.dataValues.id}}. {{this.dataValues.burgername}}
+      {{ this.dataValues.id }}. {{ dataValues.burgername }}
 
-      <button data-burgerid="{{this.dataValues.id}}" class="delburger">Delete Burger!</button>
+      <button data-burgerid="{{ this.dataValues.id }}" class="delburger">Delete Burger!</button>
     </p>
   </li>
   {{/each}}
@@ -24,7 +24,9 @@
 
 
 <h2>Create a Burger</h2>
-<form id="createburger" class="button-size">
+{{!-- Figure out why createburger isn't working in jQuery (app.js) --}}
+{{!-- <form id="createburger" class="button-size"> --}}
+<form class="button-size" method="POST" action="/api/burgers">
   <textarea type="text" name="burger" class="new-item"></textarea>
   <button type="submit" class="btn btn-primary">Save Burger!</button>
 </form>

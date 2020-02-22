@@ -46,8 +46,11 @@ $(document).ready(function() {
     event.preventDefault();
     let burger = $newItemInput.val().trim();
     console.log(burger);
-    $.post("/api/burgers", burger, getBurgers);
-    $newItemInput.val("");
+    $.ajax({
+      method: "POST",
+      url: "/api/burgers",
+      data: burger
+    }).then($newItemInput.val(""));
   }
 
   // This function constructs a burger-item row
