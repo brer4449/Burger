@@ -31,16 +31,6 @@ $(document).ready(function() {
     });
   }
 
-  // This function deletes a burger when the user clicks the delete button
-  function deleteBurger(event) {
-    event.stopPropagation();
-    let id = $(this).data("id");
-    $.ajax({
-      method: "DELETE",
-      url: "/api/burgers/" + id
-    }).then(getBurgers);
-  }
-
   // This function inserts a new burger into our database and then updates the view
   function insertBurger(event) {
     event.preventDefault();
